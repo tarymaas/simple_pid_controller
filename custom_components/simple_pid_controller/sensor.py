@@ -350,4 +350,28 @@ class PIDContributionSensor(CoordinatorEntity[PIDDataCoordinator], SensorEntity)
 
 
 class PIDSampleTimeSensor(CoordinatorEntity[PIDDataCoordinator], SensorEntity):
-    """Sensor exposing the measured sample time between PID updat
+    """Sensor exposing the measured sample time between PID updates."""
+
+    def __init__(
+        self,
+        hass: HomeAssistant,
+        entry: ConfigEntry,
+        key: str,
+        name: str,
+        coordinator: PIDDataCoordinator,
+    ) -> None:
+        super().__init__(coordinator)
+
+        BasePIDEntity.__init__(self, hass, entry, key, name)
+
+        self._attr_entity_category = EntityCategory.DIAGNOSTIC
+        self._attr_entity_registry_enabled_default = False
+        self._attr_state_class = SensorStateClass.MEASUREMENT
+        self._attr_native_unit_of_measurement = "s"
+
+    @property
+    def native_value(self) -> float | None:
+        sample_time = self._handle.last_measured_sample_time
+        if sample_time is None:
+            return None
+        return round(sample_time, 3)
