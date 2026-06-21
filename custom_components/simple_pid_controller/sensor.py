@@ -181,6 +181,12 @@ async def async_setup_entry(
                 hass, entry, "pid_d_contrib", "D contribution", coordinator
             ),
             PIDContributionSensor(hass, entry, "error", "Error", coordinator),
+            PIDContributionSensor(
+                hass, entry, "error_integral", "Error integral", coordinator
+            ),
+            PIDContributionSensor(
+                hass, entry, "error_derivative", "Error derivative", coordinator
+            ),
             PIDContributionSensor(hass, entry, "pid_i_delta", "I delta", coordinator),
             PIDSampleTimeSensor(
                 hass, entry, "actual_sample_time", "Actual Sample Time", coordinator
@@ -289,11 +295,30 @@ class PIDContributionSensor(CoordinatorEntity[PIDDataCoordinator], SensorEntity)
         else:
             error = input_value - setpoint
 
+        # Error integral and derivative are the quantities from which the I and
+        # D contributions are calculated (I = Ki * integral, D = Kd * derivative).
+        # They are recovered from the contributions and gains and expressed in
+        # the same "input - setpoint" frame as the error above, hence the sign
+        # inversion relative to simple_pid's internal "setpoint - input" error.
+        ki = self._handle.get_number("ki")
+        kd = self._handle.get_number("kd")
+        i_contrib = contributions[1]
+        d_contrib = contributions[2]
+
+        error_integral = (
+            -i_contrib / ki if ki and i_contrib is not None else None
+        )
+        error_derivative = (
+            -d_contrib / kd if kd and d_contrib is not None else None
+        )
+
         value = {
             "pid_p_contrib": contributions[0],
             "pid_i_contrib": contributions[1],
             "pid_d_contrib": contributions[2],
             "error": error,
+            "error_integral": error_integral,
+            "error_derivative": error_derivative,
             "pid_i_delta": contributions[3],
         }.get(self._key)
         return round(value, 3) if value is not None else None

@@ -39,6 +39,9 @@
 | Sensor   | `PID P Contribution`      | Proportional term value (diagnostic)    |
 | Sensor   | `PID I Contribution`      | Integral term value (diagnostic)        |
 | Sensor   | `PID D Contribution`      | Derivative term value (diagnostic)      |
+| Sensor   | `Error`                   | Difference `input - setpoint` (diagnostic) |
+| Sensor   | `Error integral`          | Time integral of the error (diagnostic) |
+| Sensor   | `Error derivative`        | Time derivative of the error (diagnostic) |
 | Number   | `Kp`, `Ki`, `Kd`          | PID gain parameters                     |
 | Number   | `Setpoint`                | Desired target value                    |
 | Number   | `Output Min` / `Max`      | Controller output limits                |
@@ -142,6 +145,7 @@ template:
 |----------|-------------------------------|----------------------------------------------------|
 | Sensor   | `PID Output`                  | Current controller output (%).                     |
 | Sensor   | `PID P/I/D Contribution`      | Diagnostic terms. Disabled by default.             |
+| Sensor   | `Error`, `Error integral`, `Error derivative` | Error and the integral/derivative the I and D terms are calculated from. Disabled by default. |
 | Number   | `Kp`, `Ki`, `Kd`              | PID gains.                                         |
 | Number   | `Setpoint`                    | Desired system target.                             |
 | Number   | `Output Min` / `Output Max`   | Min/max control limits.                            |
