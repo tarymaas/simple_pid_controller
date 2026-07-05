@@ -25,11 +25,14 @@ from .const import (
     CONF_INPUT_RANGE_MAX,
     CONF_OUTPUT_RANGE_MIN,
     CONF_OUTPUT_RANGE_MAX,
+    CONF_TIME_UNIT,
     CONF_STEP_PREFIX,
     DEFAULT_INPUT_RANGE_MIN,
     DEFAULT_INPUT_RANGE_MAX,
     DEFAULT_OUTPUT_RANGE_MIN,
     DEFAULT_OUTPUT_RANGE_MAX,
+    DEFAULT_TIME_UNIT,
+    TIME_UNIT_OPTIONS,
     DEFAULT_STEPS,
 )
 
@@ -72,6 +75,16 @@ class PIDControllerFlowHandler(ConfigFlow, domain=DOMAIN):
                 vol.Optional(
                     CONF_OUTPUT_RANGE_MAX, default=DEFAULT_OUTPUT_RANGE_MAX
                 ): vol.Coerce(float),
+                vol.Optional(
+                    CONF_TIME_UNIT, default=DEFAULT_TIME_UNIT
+                ): selector(
+                    {
+                        "select": {
+                            "options": TIME_UNIT_OPTIONS,
+                            "translation_key": CONF_TIME_UNIT,
+                        }
+                    }
+                ),
             }
         )
 
@@ -113,6 +126,7 @@ class PIDControllerFlowHandler(ConfigFlow, domain=DOMAIN):
                     CONF_INPUT_RANGE_MAX: user_input[CONF_INPUT_RANGE_MAX],
                     CONF_OUTPUT_RANGE_MIN: user_input[CONF_OUTPUT_RANGE_MIN],
                     CONF_OUTPUT_RANGE_MAX: user_input[CONF_OUTPUT_RANGE_MAX],
+                    CONF_TIME_UNIT: user_input[CONF_TIME_UNIT],
                 },
             )
 
@@ -146,6 +160,10 @@ class PIDControllerOptionsFlowHandler(OptionsFlow):
         )
         current_output_max = self.config_entry.options.get(
             CONF_OUTPUT_RANGE_MAX, DEFAULT_OUTPUT_RANGE_MAX
+        )
+        current_time_unit = self.config_entry.options.get(
+            CONF_TIME_UNIT,
+            self.config_entry.data.get(CONF_TIME_UNIT, DEFAULT_TIME_UNIT),
         )
 
         step_fields = {
@@ -182,6 +200,17 @@ class PIDControllerOptionsFlowHandler(OptionsFlow):
                     CONF_OUTPUT_RANGE_MAX,
                     default=current_output_max,
                 ): vol.Coerce(float),
+                vol.Required(
+                    CONF_TIME_UNIT,
+                    default=current_time_unit,
+                ): selector(
+                    {
+                        "select": {
+                            "options": TIME_UNIT_OPTIONS,
+                            "translation_key": CONF_TIME_UNIT,
+                        }
+                    }
+                ),
                 **step_fields,
             }
         )

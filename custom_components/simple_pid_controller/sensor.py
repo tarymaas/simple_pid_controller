@@ -20,6 +20,7 @@ from typing import Any
 from . import PIDDeviceHandle
 from .entity import BasePIDEntity
 from .coordinator import PIDDataCoordinator
+from .const import SECONDS_PER_HOUR, TIME_UNIT_HOURS
 
 # Coordinator is used to centralize the data updates
 PARALLEL_UPDATES = 0
@@ -65,7 +66,16 @@ async def async_setup_entry(
         windup_protection = handle.get_switch("windup_protection")
 
         # adapt PID settings
-        handle.pid.tunings = (kp, ki, kd)
+        # Convert Ki/Kd to per-second units when the configured time unit is hours.
+        ki_core = ki
+        kd_core = kd
+        if handle.time_unit == TIME_UNIT_HOURS:
+            if ki_core is not None:
+                ki_core = ki_core / SECONDS_PER_HOUR
+            if kd_core is not None:
+                kd_core = kd_core * SECONDS_PER_HOUR
+
+        handle.pid.tunings = (kp, ki_core, kd_core)
         handle.pid.setpoint = setpoint
 
         handle.pid_parameter_history.append(

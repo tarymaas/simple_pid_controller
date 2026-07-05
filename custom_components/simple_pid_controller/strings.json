@@ -11,7 +11,8 @@
           "input_range_min": "Minimum Input Range",
           "input_range_max": "Maximum Input Range",
           "output_range_min": "Minimum Output Range",
-          "output_range_max": "Maximum Output Range"        }
+          "output_range_max": "Maximum Output Range",
+          "time_unit": "Time Unit"        }
       }
     },
     "abort": {
@@ -29,6 +30,7 @@
           "input_range_max": "Maximum Input Range",
           "output_range_min": "Minimum Output Range",
           "output_range_max": "Maximum Output Range",
+          "time_unit": "Time Unit",
           "step_kp": "Kp Step Size",
           "step_ki": "Ki Step Size",
           "step_kd": "Kd Step Size",
@@ -46,8 +48,17 @@
           "step_setpoint": "Increment size for the setpoint picker.",
           "step_output_min": "Increment size for the output minimum.",
           "step_output_max": "Increment size for the output maximum.",
-          "step_starting_output": "Increment size for the startup value."
+          "step_starting_output": "Increment size for the startup value.",
+          "time_unit": "Time unit for the integral and derivative terms. When set to hours, Ki is divided by 3600 and Kd is multiplied by 3600 before being applied."
         }
+      }
+    }
+  },
+  "selector": {
+    "time_unit": {
+      "options": {
+        "seconds": "Seconds",
+        "hours": "Hours"
       }
     }
   }

@@ -11,7 +11,8 @@
           "input_range_min": "Minimum Input Bereik",
           "input_range_max": "Maximum Input Bereik",
           "output_range_min": "Minimum Output Bereik",
-          "output_range_max": "Maximum Output Bereik"        }
+          "output_range_max": "Maximum Output Bereik",
+          "time_unit": "Tijdseenheid"        }
       }
     },
     "abort": {
@@ -34,6 +35,7 @@
           "input_range_max": "Maximum Input Bereik",
           "output_range_min": "Minimum Output Bereik",
           "output_range_max": "Maximum Output Bereik",
+          "time_unit": "Tijdseenheid",
           "step_kp": "Kp Stapgrootte",
           "step_ki": "Ki Stapgrootte",
           "step_kd": "Kd Stapgrootte",
@@ -51,7 +53,8 @@
           "step_setpoint": "Stapgrootte voor de setpoint-kiezer.",
           "step_output_min": "Stapgrootte voor de minimale uitvoer.",
           "step_output_max": "Stapgrootte voor de maximale uitvoer.",
-          "step_starting_output": "Stapgrootte voor de startwaarde."
+          "step_starting_output": "Stapgrootte voor de startwaarde.",
+          "time_unit": "Tijdseenheid voor de integrerende en differentiërende termen. Bij uren wordt Ki gedeeld door 3600 en Kd vermenigvuldigd met 3600 voordat ze worden toegepast."
         }
       }
     },
@@ -91,6 +94,15 @@
     "sensor": {
       "current_value": {
         "name": "Huidige waarde"
+      }
+    }
+  }
+  ,
+  "selector": {
+    "time_unit": {
+      "options": {
+        "seconds": "Seconden",
+        "hours": "Uren"
       }
     }
   }

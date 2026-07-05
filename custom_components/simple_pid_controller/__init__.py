@@ -23,10 +23,12 @@ from .const import (
     CONF_INPUT_RANGE_MAX,
     CONF_OUTPUT_RANGE_MIN,
     CONF_OUTPUT_RANGE_MAX,
+    CONF_TIME_UNIT,
     DEFAULT_INPUT_RANGE_MIN,
     DEFAULT_INPUT_RANGE_MAX,
     DEFAULT_OUTPUT_RANGE_MIN,
     DEFAULT_OUTPUT_RANGE_MAX,
+    DEFAULT_TIME_UNIT,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -83,6 +85,10 @@ class PIDDeviceHandle:
         )
         self.sensor_entity_id = entry.options.get(
             CONF_SENSOR_ENTITY_ID, entry.data.get(CONF_SENSOR_ENTITY_ID)
+        )
+        self.time_unit = entry.options.get(
+            CONF_TIME_UNIT,
+            entry.data.get(CONF_TIME_UNIT, DEFAULT_TIME_UNIT),
         )
         self.last_contributions = (None, None, None)  # (P, I, D)
         self.last_known_output = None
